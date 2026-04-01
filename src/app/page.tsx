@@ -283,16 +283,15 @@ export default function Home() {
             </div>
           </div>
           <div className="flex items-center gap-1">
-            {messages.length > 0 && (
-              <button
-                onClick={exportChat}
-                className="p-2 text-slate-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-500/10 rounded-lg transition-all duration-200"
-                aria-label="导出对话"
-                title="导出对话"
-              >
-                <Download className="w-4 h-4" />
-              </button>
-            )}
+            <button
+              onClick={exportChat}
+              disabled={messages.length === 0}
+              className="p-2 text-slate-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-500/10 rounded-lg transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-slate-400"
+              aria-label="导出对话记录"
+              title="导出对话记录"
+            >
+              <Download className="w-4 h-4" />
+            </button>
             <button
               onClick={toggleThemeQuick}
               className="p-2 text-slate-400 hover:text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-500/10 rounded-lg transition-all duration-200"
@@ -309,16 +308,15 @@ export default function Home() {
             >
               <Settings className="w-4 h-4" />
             </button>
-            {messages.length > 0 && (
-              <button
-                onClick={clearChat}
-                className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-all duration-200"
-                aria-label="清空对话"
-                title="清空对话"
-              >
-                <Trash2 className="w-4 h-4" />
-              </button>
-            )}
+            <button
+              onClick={clearChat}
+              disabled={messages.length === 0}
+              className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-slate-400"
+              aria-label="清空对话"
+              title="清空对话"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </header>
