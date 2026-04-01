@@ -1,8 +1,11 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #f8f9fb;
   --foreground: #0f172a;
+  --font-scale: 1;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -132,15 +135,14 @@ main .space-y-5 > div {
   }
 }
 
-/* Font size variants */
-.text-size-small {
-  font-size: 12px;
-}
+/* Font size variants - use !important to override Tailwind */
+.text-size-small { --font-scale: 0.85; }
+.text-size-medium { --font-scale: 1; }
+.text-size-large { --font-scale: 1.15; }
 
-.text-size-medium {
-  font-size: 14px;
+.text-size-small .prose, .text-size-small [class*="text-[13px]"], .text-size-small [class*="text-sm"] {
+  font-size: calc(13px * var(--font-scale)) !important;
 }
-
-.text-size-large {
-  font-size: 16px;
+.text-size-large .prose, .text-size-large [class*="text-[13px]"], .text-size-large [class*="text-sm"] {
+  font-size: calc(13px * var(--font-scale)) !important;
 }

@@ -208,6 +208,7 @@ export interface SearchFilters {
   tuition_max?: number;
   tuition_min?: number;
   type?: string;
+  school_type?: string;
   limit?: number;
 }
 
@@ -258,6 +259,10 @@ export function searchPrograms(filters: SearchFilters) {
   if (filters.type) {
     conditions.push("a.type LIKE ?");
     params.push(`%${filters.type}%`);
+  }
+  if (filters.school_type) {
+    conditions.push("s.tags LIKE ?");
+    params.push(`%${filters.school_type}%`);
   }
 
   const limit = Math.min(filters.limit || 100, 200);

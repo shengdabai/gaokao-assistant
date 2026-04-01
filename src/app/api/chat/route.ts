@@ -73,6 +73,10 @@ const SYSTEM_PROMPT = `你是"青海高考报考教练"，专业友好的高考�
 7. search_programs 返回按学校分组的结果，展示时列出每个学校及其匹配的专业
 8. get_school_info 返回解析后的口碑摘要（宿舍/食堂/交通/学生评价），直接引用展示
 9. 支持地区别名：江浙沪、长三角、珠三角、京津冀、东北、西北、西南、华中、华东、华南、华北
+10. 支持按学校性质筛选：school_type 参数可传"民办"或"公办"
+11. 用户提到"南方"时，搜索华东+华南+西南地区；"北方"时搜索华北+东北+西北
+12. 如果搜索结果为空，说明该学校/条件在2025年青海招生计划中没有记录，建议用户换个关键词或放宽条件
+13. 用户问的学校如果不在数据库中，明确告知"该校2025年未在青海招生"，而非说"名称有误"
 
 ## 回答格式
 1. 数字信息直接展示原始数据，绝不改述（"计划人数：5人"不说"约5名"）
@@ -102,6 +106,7 @@ const tools: OpenAI.ChatCompletionTool[] = [
           tuition_max: { type: "number", description: "最高学费（元/年）" },
           tuition_min: { type: "number", description: "最低学费（元/年）" },
           type: { type: "string", description: "招生类型：藏文班、预科、军事类、民族班、蒙文班等" },
+          school_type: { type: "string", description: "学校性质：民办 或 公办" },
           limit: { type: "number", description: "返回结果数量上限，默认100" },
         },
         required: [],
