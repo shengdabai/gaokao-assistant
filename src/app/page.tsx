@@ -377,6 +377,17 @@ export default function Home() {
                   </span>
                 ))}
               </div>
+
+              {/* API Key prompt */}
+              {!settings.apiKey && (
+                <button
+                  onClick={() => setShowSettings(true)}
+                  className="mt-6 flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20 text-amber-700 dark:text-amber-400 text-xs font-medium hover:bg-amber-100 dark:hover:bg-amber-500/15 transition-all duration-200"
+                >
+                  <Settings className="w-3.5 h-3.5" />
+                  请先点击这里配置 AI 模型和 API Key 后开始使用
+                </button>
+              )}
             </div>
           ) : (
             <div role="log" aria-live="polite" aria-label="对话记录" className="space-y-5">
@@ -622,7 +633,7 @@ export default function Home() {
             </div>
 
             {/* API Key */}
-            <div>
+            <div className="mb-6">
               <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">API Key</label>
               <input
                 type="password"
@@ -635,6 +646,31 @@ export default function Home() {
                 API Key 仅保存在浏览器本地，不会上传到服务器
               </p>
             </div>
+
+            {/* Status indicator */}
+            <div className={`flex items-center gap-2 mb-4 px-3 py-2 rounded-xl text-xs ${
+              settings.apiKey
+                ? "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20"
+                : "bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-500/20"
+            }`}>
+              <div className={`w-2 h-2 rounded-full ${settings.apiKey ? "bg-emerald-500" : "bg-amber-500"}`} />
+              {settings.apiKey
+                ? `已配置 ${BUILTIN_PROVIDERS.find((p) => p.id === settings.provider)?.name} · ${settings.model}`
+                : "未配置 API Key，请先填入后保存"}
+            </div>
+
+            {/* Save button */}
+            <button
+              onClick={() => {
+                try {
+                  localStorage.setItem(STORAGE_KEYS.settings, JSON.stringify(settings));
+                } catch {}
+                setShowSettings(false);
+              }}
+              className="w-full py-2.5 rounded-xl text-sm font-medium bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:from-blue-600 hover:to-cyan-600 transition-all duration-200 shadow-sm"
+            >
+              保存设置
+            </button>
           </div>
         </div>
       )}
