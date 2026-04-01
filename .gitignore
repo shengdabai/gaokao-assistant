@@ -49,3 +49,4 @@ yarn-error.log*
 next-env.d.ts
 .omc/
 data/gaokao.db-*
+data/gaokao*.db*
