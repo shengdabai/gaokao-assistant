@@ -268,7 +268,17 @@ export async function POST(request: Request) {
       for (const toolCall of choice.message.tool_calls) {
         if (toolCall.type !== "function") continue;
         const fn = toolCall.function;
-        const args = JSON.parse(fn.arguments);
+
+        let args: Record<string, unknown> = {};
+        try {
+          const parsedArgs = JSON.parse(fn.arguments);
+          if (parsedArgs && typeof parsedArgs === "object" && !Array.isArray(parsedArgs)) {
+            args = parsedArgs as Record<string, unknown>;
+          }
+        } catch (error) {
+          console.warn("Invalid tool arguments:", fn.name, error);
+        }
+
         const result = executeToolCall(fn.name, args);
 
         openaiMessages.push({
