@@ -48,7 +48,8 @@ function initDb(db: Database.Database) {
       is_211 INTEGER DEFAULT 0,
       is_double_first INTEGER DEFAULT 0,
       reputation_score REAL DEFAULT 0,
-      reputation_summary TEXT DEFAULT ''
+      reputation_summary TEXT DEFAULT '',
+      response_count INTEGER DEFAULT 0
     );
 
     CREATE TABLE IF NOT EXISTS admissions (
@@ -75,9 +76,10 @@ function initDb(db: Database.Database) {
     CREATE INDEX idx_admissions_subject ON admissions(subject);
     CREATE INDEX idx_admissions_batch ON admissions(batch);
     CREATE INDEX idx_admissions_major_category ON admissions(major_category);
-    CREATE INDEX idx_admissions_city ON admissions(school_name);
+    CREATE INDEX idx_admissions_school_name ON admissions(school_name);
     CREATE INDEX idx_admissions_tuition ON admissions(tuition);
     CREATE INDEX idx_admissions_type ON admissions(type);
+    CREATE INDEX idx_schools_city ON schools(city);
   `);
 }
 
@@ -99,7 +101,6 @@ function seedDb(db: Database.Database) {
   );
   const schoolTx = db.transaction(() => {
     for (const s of schools) {
-      const province = s.city ? s.city.split("省")[0] + "省" : "";
       insertSchool.run(s.code, s.name, s.city || "");
     }
   });

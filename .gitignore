@@ -37,6 +37,10 @@ yarn-error.log*
 /data/gaokao.db
 /data/colleges_chat.json
 /data/kkdaxue.json
+# large raw data files - regenerate via data export scripts
+/data/data_raw.json
+/data/schools_raw.json
+/data/*.xlsx
 
 # gstack
 .gstack/

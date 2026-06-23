@@ -275,8 +275,9 @@ export async function POST(request: Request) {
           if (parsedArgs && typeof parsedArgs === "object" && !Array.isArray(parsedArgs)) {
             args = parsedArgs as Record<string, unknown>;
           }
-        } catch (error) {
-          console.warn("Invalid tool arguments:", fn.name, error);
+        } catch {
+          // Suppress tool name from logs to avoid internal detail leakage
+          console.warn("Invalid tool arguments received");
         }
 
         const result = executeToolCall(fn.name, args);
