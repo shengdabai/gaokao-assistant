@@ -19,3 +19,13 @@ test("build workflow runs lint and tests in addition to the build", () => {
     assert.ok(runs.includes(cmd), `build.yml is missing a step running \`${cmd}\` (found: ${JSON.stringify(runs)})`);
   }
 });
+
+for (const name of ["build.yml", "repository-hygiene.yml"]) {
+  test(`${name} only cancels in-progress runs for pull requests`, () => {
+    // Pushes to main must never cancel each other; superseded PR runs may.
+    const match = readWorkflow(name).match(/^\s+cancel-in-progress:\s*(.+)$/m);
+
+    assert.ok(match, `${name} has no concurrency.cancel-in-progress setting`);
+    assert.equal(match[1].trim(), "${{ github.event_name == 'pull_request' }}");
+  });
+}
