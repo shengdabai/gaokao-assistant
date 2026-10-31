@@ -222,12 +222,22 @@ export async function POST(request: Request) {
       return Response.json({ error: `不支持的模型提供商: ${providerKey}` }, { status: 400 });
     }
 
-    const apiKey = body.apiKey || process.env.GLM_API_KEY || "";
+    const model = body.model || providerConfig.defaultModel;
+
+    // The server-side GLM key may only be used for GLM itself and only with a
+    // configured GLM model; every other provider requires the caller's own key,
+    // so the server key is never sent to a third-party host.
+    const clientApiKey = typeof body.apiKey === "string" ? body.apiKey : "";
+    let apiKey = clientApiKey;
+    if (!apiKey && providerKey === "glm") {
+      if (!providerConfig.models.includes(model)) {
+        return Response.json({ error: `不支持的模型: ${model}` }, { status: 400 });
+      }
+      apiKey = process.env.GLM_API_KEY || "";
+    }
     if (!apiKey) {
       return Response.json({ error: "请先在设置中配置 API Key" }, { status: 400 });
     }
-
-    const model = body.model || providerConfig.defaultModel;
 
     // Create client dynamically
     const client = new OpenAI({
