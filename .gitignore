@@ -69,3 +69,6 @@ id_dsa
 .omc/
 .codex/
 .claude/local/
+
+# leftover git stubs from interrupted upgrade runs
+.git.broken-stub-*/
